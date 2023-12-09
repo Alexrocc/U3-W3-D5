@@ -27,8 +27,8 @@
               class="fas fa-heart"
               (click)="addFavorite(movie.id)"
               [ngClass]="{
-                favourites: check === true,
-                unfavourite: check === false
+                'text-danger': check,
+                'text-secondary': !check
               }"
             ></i>
           </div>
