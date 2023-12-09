@@ -14,10 +14,11 @@ export class MoviesComponent implements OnInit {
   apiURL = environment.apiURL;
   movies!: Movie[] | undefined;
   favouriteArr!: Favourite[] | undefined;
+  isFav!: any;
 
   constructor(private moviesSrv: MoviesService, private http: HttpClient) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.moviesSrv.fetchMovies().subscribe((movieArr: Movie[]) => {
       this.movies = movieArr;
     });
@@ -25,5 +26,22 @@ export class MoviesComponent implements OnInit {
     this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
       this.favouriteArr = favourites;
     });
+
+    setTimeout(() => {
+      this.favouriteArr?.forEach((e) => {
+        //  this.isFav = this.movies!.includes(e.movieId)
+      });
+    }, 1000);
+  }
+  addFavorite(movieId: number) {
+    const user = localStorage.getItem('user');
+    const userId = JSON.parse(user!).user.id;
+    this.moviesSrv.addFavourite({ userId, movieId }).subscribe();
+    setTimeout(() => {
+      this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
+        this.favouriteArr = favourites;
+      });
+      console.log(this.favouriteArr);
+    }, 1000);
   }
 }

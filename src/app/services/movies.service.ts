@@ -16,8 +16,8 @@ export class MoviesService {
     return this.http.get<Movie[]>(`${this.apiURL}/movies-popular`);
   }
 
-  addFavourite(data: { userId: number; movieId: number }) {
-    return this.http.post<Favourite>(`${this.apiURL}/favourites`, data);
+  addFavourite(data: Favourite) {
+    return this.http.post<Favourite>(`${this.apiURL}/favorites`, data);
   }
 
   getFavourites() {

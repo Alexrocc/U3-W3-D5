@@ -61,7 +61,7 @@ export class AuthService {
 
   private errors(error: any) {
     switch (error.error) {
-      case 'Email already exixts':
+      case 'Email already exists':
         return throwError('Email already in use');
         break;
 
