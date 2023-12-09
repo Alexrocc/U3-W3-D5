@@ -26,6 +26,7 @@
         <li class="nav-item">
           <a
             class="nav-link"
+            *ngIf="user"
             [routerLink]="['movies']"
             routerLinkActive="active"
             >Movies</a
@@ -34,24 +35,38 @@
         <li class="nav-item">
           <a
             class="nav-link"
+            *ngIf="user"
             [routerLink]="['profile']"
             routerLinkActive="active"
             >Profile</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['login']" routerLinkActive="active"
+          <a
+            class="nav-link"
+            *ngIf="!user"
+            [routerLink]="['login']"
+            routerLinkActive="active"
             >Login</a
           >
         </li>
         <li class="nav-item">
           <a
             class="nav-link"
+            *ngIf="!user"
             [routerLink]="['register']"
             routerLinkActive="active"
             >Register</a
           >
         </li>
+        <button
+          type="button"
+          class="btn btn-danger"
+          *ngIf="user"
+          (click)="logout()"
+        >
+          Log out
+        </button>
       </ul>
     </div>
   </div>
