@@ -34,7 +34,7 @@ export class AuthService {
   register(data: { name: string; email: string; password: string }) {
     return this.http.post(`${this.apiURL}/signup`, data).pipe(
       tap(() => {
-        this.router.navigate(['/']), catchError(this.errors);
+        this.router.navigate(['login']), catchError(this.errors);
       })
     );
   }
@@ -48,12 +48,12 @@ export class AuthService {
   restore() {
     const user = localStorage.getItem('user');
     if (!user) {
-      this.router.navigate(['/']);
+      this.router.navigate(['login']);
       return;
     }
     const userData: AuthData = JSON.parse(user);
     if (this.jwtHelper.isTokenExpired(userData.accessToken)) {
-      this.router.navigate(['/']);
+      this.router.navigate(['login']);
       return;
     }
     this.authSubj.next(userData);
