@@ -31,7 +31,7 @@ export class AuthService {
     );
   }
 
-  register(data: { nome: string; email: string; password: string }) {
+  register(data: { name: string; email: string; password: string }) {
     return this.http.post(`${this.apiURL}/signup`, data).pipe(
       tap(() => {
         this.router.navigate(['/']), catchError(this.errors);

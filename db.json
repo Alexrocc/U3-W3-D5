@@ -5,6 +5,12 @@
       "password": "$2a$10$ZLY63quWnMVo0lO951uFdOJRfUxeo8U6YJ/Cue06Vgp4Ad8S/CjaC",
       "name": "Dario",
       "id": 2
+    },
+    {
+      "email": "pippo@pippo.com",
+      "password": "$2a$10$cB0wRQsPE6xqaHjkWHD4kemzlkVc9a19u5/aDeVAkrEEajzCPrz6K",
+      "name": "Alessio",
+      "id": 3
     }
   ],
   "favorites": [
