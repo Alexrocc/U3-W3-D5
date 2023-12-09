@@ -1,18 +1,24 @@
-<h1 class="text-center">Our Movies</h1>
+<h1 class="text-center my-4">Our Movies</h1>
 
 <div class="container">
-  <div class="row-cols-4">
-    <div class="col" *ngFor="let movie of movies">
+  <div class="row">
+    <div class="col-4" *ngFor="let movie of movies">
       <div class="card">
-        <img src="{{ movie.poster_path }}" class="card-img-top" alt="..." />
+        <img src="{{ movie.backdrop_path }}" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">{{ movie.title }}</h5>
           <p class="card-text text-truncate">
             {{ movie.overview }}
           </p>
-          <span>{{ movie.release_date }}</span>
-          <span>{{ movie.vote_average }}</span>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <div>
+            <div>
+              <span>Release date: {{ movie.release_date }}</span>
+            </div>
+            <div class="mt-2">
+              <span><i class="far fa-star"></i> {{ movie.vote_average }}</span>
+            </div>
+          </div>
+          <div class="mt-2"><i class="fas fa-heart"></i></div>
         </div>
       </div>
     </div>
