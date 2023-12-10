@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from 'src/app/models/movie';
 import { Favourite } from 'src/app/models/favourite';
 import { MoviesService } from 'src/app/services/movies.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-movies',
@@ -11,7 +10,6 @@ import { environment } from 'src/environments/environment';
 })
 export class MoviesComponent implements OnInit {
   userId!: number;
-  apiURL = environment.apiURL;
   movies!: Movie[] | undefined;
   favouriteArr!: Favourite[];
 
@@ -37,7 +35,24 @@ export class MoviesComponent implements OnInit {
       console.log(this.favouriteArr);
     });
   }
-
+  checkFav(id: number): boolean {
+    return (
+      Array.isArray(this.favouriteArr) &&
+      this.favouriteArr.some((e) => e.movieId === id)
+    );
+  }
+  handleFav(movieId: number) {
+    if (this.checkFav(movieId)) {
+      let foundMovie: any = this.favouriteArr.find(
+        (movie) => movie.movieId === movieId
+      );
+      if (foundMovie) {
+        this.removeFavorite(foundMovie.id);
+      }
+    } else {
+      this.addFavorite(movieId);
+    }
+  }
   addFavorite(movieId: number) {
     this.moviesSrv.addFavourite(this.userId, movieId).subscribe(() => {
       this.getFavourites();
@@ -48,25 +63,5 @@ export class MoviesComponent implements OnInit {
     this.moviesSrv.removeFavourite(movieId).subscribe(() => {
       this.getFavourites();
     });
-  }
-
-  checkFav(id: number): boolean {
-    return (
-      Array.isArray(this.favouriteArr) &&
-      this.favouriteArr!.some((e) => e.movieId === id)
-    );
-  }
-
-  handleFav(movieId: number) {
-    if (this.checkFav(movieId)) {
-      let foundMovie: any = this.favouriteArr.find(
-        (movie) => movie.movieId === movieId
-      );
-      if (foundMovie) {
-        this.removeFavorite(foundMovie.id);
-      } else {
-        this.addFavorite(movieId);
-      }
-    }
   }
 }
