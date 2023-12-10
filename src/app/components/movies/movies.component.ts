@@ -11,36 +11,59 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./movies.component.scss'],
 })
 export class MoviesComponent implements OnInit {
+  userId!: number;
   apiURL = environment.apiURL;
   movies!: Movie[] | undefined;
-  favouriteArr!: Favourite[] | undefined;
-  check: any;
+  favouriteArr!: Favourite[];
 
   constructor(private moviesSrv: MoviesService, private http: HttpClient) {}
 
-  async ngOnInit() {
-    await this.moviesSrv.fetchMovies().subscribe((movieArr: Movie[]) => {
+  ngOnInit() {
+    this.moviesSrv.fetchMovies().subscribe((movieArr: Movie[]) => {
       this.movies = movieArr;
-    });
-
-    this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
-      this.favouriteArr = favourites;
-      console.log(this.favouriteArr);
-      this.favouriteArr!.forEach((e) => {
-        this.check = this.movies?.filter((movie) => e.movieId === movie.id);
-        console.log(this.check);
-      });
+      let userData = localStorage.getItem('user');
+      this.userId = JSON.parse(userData!).user.id;
+      this.getFavourites();
     });
   }
+
+  getFavourites() {
+    this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
+      this.favouriteArr = favourites;
+    });
+  }
+
   addFavorite(movieId: number) {
-    const user = localStorage.getItem('user');
-    const userId = JSON.parse(user!).user.id;
-    this.moviesSrv.addFavourite({ userId, movieId }).subscribe();
-    setTimeout(() => {
-      this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
-        this.favouriteArr = favourites;
-      });
-      console.log(this.favouriteArr);
-    }, 1000);
+    let userId = this.userId;
+    this.moviesSrv.addFavourite({ userId, movieId }).subscribe(() => {
+      this.getFavourites();
+    });
+  }
+
+  removeFavorite(movieId: number) {
+    this.moviesSrv.removeFavourite(movieId).subscribe(() => {
+      this.getFavourites();
+    });
+  }
+
+  checkFav(id: number): boolean {
+    return (
+      Array.isArray(this.favouriteArr) &&
+      this.favouriteArr!.some((e) => e.movieId === id)
+    );
+  }
+
+  handleFav(movieId: number) {
+    if (this.checkFav(movieId)) {
+      let foundMovie: any = this.favouriteArr.find(
+        (movie) => movie.movieId === movieId
+      );
+
+      if (foundMovie) {
+        this.removeFavorite(foundMovie.id);
+      } else {
+        this.addFavorite(movieId);
+      }
+    }
   }
 }

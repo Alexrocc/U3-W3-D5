@@ -20,6 +20,10 @@ export class MoviesService {
     return this.http.post<Favourite>(`${this.apiURL}/favorites`, data);
   }
 
+  removeFavourite(id: number) {
+    return this.http.delete<Favourite>(`${this.apiURL}/favorites/${id}`);
+  }
+
   getFavourites() {
     const user = localStorage.getItem('user');
     const userId = JSON.parse(user!).user.id;
