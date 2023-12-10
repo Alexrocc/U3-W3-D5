@@ -3,7 +3,6 @@ import { Movie } from 'src/app/models/movie';
 import { Favourite } from 'src/app/models/favourite';
 import { MoviesService } from 'src/app/services/movies.service';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-movies',
@@ -16,13 +15,18 @@ export class MoviesComponent implements OnInit {
   movies!: Movie[] | undefined;
   favouriteArr!: Favourite[];
 
-  constructor(private moviesSrv: MoviesService, private http: HttpClient) {}
+  constructor(private moviesSrv: MoviesService) {}
 
   ngOnInit() {
     this.moviesSrv.fetchMovies().subscribe((movieArr: Movie[]) => {
       this.movies = movieArr;
       let userData = localStorage.getItem('user');
-      this.userId = JSON.parse(userData!).user.id;
+      if (userData) {
+        let user = JSON.parse(userData);
+        let userId = user.user.id;
+        this.userId = userId;
+        console.log(userId);
+      }
       this.getFavourites();
     });
   }
@@ -30,12 +34,12 @@ export class MoviesComponent implements OnInit {
   getFavourites() {
     this.moviesSrv.getFavourites().subscribe((favourites: Favourite[]) => {
       this.favouriteArr = favourites;
+      console.log(this.favouriteArr);
     });
   }
 
   addFavorite(movieId: number) {
-    let userId = this.userId;
-    this.moviesSrv.addFavourite({ userId, movieId }).subscribe(() => {
+    this.moviesSrv.addFavourite(this.userId, movieId).subscribe(() => {
       this.getFavourites();
     });
   }
@@ -58,7 +62,6 @@ export class MoviesComponent implements OnInit {
       let foundMovie: any = this.favouriteArr.find(
         (movie) => movie.movieId === movieId
       );
-
       if (foundMovie) {
         this.removeFavorite(foundMovie.id);
       } else {
