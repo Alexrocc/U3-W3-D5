@@ -1,9 +1,5 @@
 <h1 class="text-center mt-5">Welcome to Lorem Movies!</h1>
 
-<div class="container text-center mt-4" *ngIf="user; else notUser">
+<div class="container text-center mt-4" *ngIf="user">
   <h2>Welcome back, {{ user }}!</h2>
 </div>
-
-<ng-template #notUser>
-  <h2>Please register and/or login to access your content!</h2>
-</ng-template>

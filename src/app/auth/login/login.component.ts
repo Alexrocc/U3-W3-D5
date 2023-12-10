@@ -13,7 +13,9 @@ export class LoginComponent implements OnInit {
 
   form!: NgForm;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authSrv.restore();
+  }
 
   logIn(form: NgForm) {
     try {

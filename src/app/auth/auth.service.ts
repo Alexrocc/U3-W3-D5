@@ -57,6 +57,7 @@ export class AuthService {
       return;
     }
     this.authSubj.next(userData);
+    this.router.navigate(['/']);
   }
 
   private errors(error: any) {
@@ -71,6 +72,7 @@ export class AuthService {
 
       case 'Cannot find user':
         return throwError('This user cannot be found');
+        break;
 
       default:
         return 'Response error';
